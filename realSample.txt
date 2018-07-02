@@ -1,5 +1,4 @@
 INVITE sip:30005@192.168.98.1:5060 SIP/2.0
-
 Via: SIP/2.0/UDP 10.10.11.151;branch=z9hG4bK198f4e14a842775eac265723638f8834
 From: "62106 *" <sip:62106@10.10.11.151;user=phone>;tag=5d663a6d62b4deffafac77a6b3eed8ed
 To: "30005" <sip:30005@10.10.11.151;user=phone>
