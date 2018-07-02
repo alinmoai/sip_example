@@ -88,7 +88,7 @@ class PhpSIP
   /**
    * Source IP address
    */
-  private $user_agent = 'PHP SIP';
+  public $user_agent = 'PHP SIP';
   
   /**
    * CSeq

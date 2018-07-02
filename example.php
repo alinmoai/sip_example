@@ -17,6 +17,9 @@ function getInviteInstance($sourceIP, $from, $to) {
   $API->addHeader('Min-SE: 900');
   $API->addHeader('Alert-Info: <urn:alert:tone:internal>');
 
+  // 把Header換成正式環境
+  $API->user_agent = "OmniPCX Enterprise R11.2.2 l2.300.40";
+
   // 把body換成正式環境
   $body = "v=0\r\n";
   $body.= "o=OXE 0 0 IN IP4 ".$API->src_ip."\r\n";
