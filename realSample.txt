@@ -27,4 +27,3 @@ a=fmtp:18 annexb=no
 a=ptime:20
 a=maxptime:40
 a=rtpmap:97 telephone-event/8000
-
