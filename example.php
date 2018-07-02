@@ -41,6 +41,7 @@ function getInviteInstance($sourceIP, $from, $to) {
 
 try
 {
+  $isDebug = true;
   $sourceIP = '192.168.100.222'; 
   $to = '6001'; // extension number
   $setupFrom = rand(30001, 31000);  // 第一次call用的from 
@@ -63,7 +64,7 @@ try
   $res = $setupAPI->send();
 
   echo "\nto = ".$setupAPI->to."\n";
-  if($res == 200) {
+  if($res == 200 || isDebug) {
     echo "response: $res, setup success\n\n";
 
     echo "staring refer call\n";
@@ -79,7 +80,7 @@ try
 
     $res = $referAPI->send();
 
-    if ($res == 200) {
+    if ($res == 200 || isDebug) {
         echo "refer call success, bye to setup call\n\n";
         $setupAPI->setMethod('BYE');
         $res = $setupAPI->send();

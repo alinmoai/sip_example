@@ -1294,10 +1294,10 @@ class PhpSIP
     }
     else if ($this->method != 'MESSAGE')
     {
-      $r.= 'Contact: <sip:'.$this->from_user.'@'.$this->src_ip.':'.$this->src_port.'>'."\r\n";
+      // $r.= 'Contact: <sip:'.$this->from_user.'@'.$this->src_ip.':'.$this->src_port.'>'."\r\n";
 
-      //Jeff Change 
-      // $r.= 'Contact: <sip:'.$this->from_user.'@'.$this->src_ip.'>'."\r\n";
+      // Jeff Change 
+      $r.= 'Contact: <sip:'.$this->from_user.'@'.$this->src_ip.'>'."\r\n";
     }
     
     // Content-Type
