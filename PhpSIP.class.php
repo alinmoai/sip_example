@@ -83,7 +83,7 @@ class PhpSIP
   /**
    * Source IP address
    */
-  private $src_ip;
+  public $src_ip;
   
   /**
    * Source IP address

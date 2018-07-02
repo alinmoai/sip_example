@@ -17,18 +17,21 @@ function getInviteInstance($sourceIP, $from, $to) {
   $API->addHeader('Min-SE: 900');
   $API->addHeader('Alert-Info: <urn:alert:tone:internal>');
 
-  $API->setBody("v=0
-o=OXE 1529993935 1529993935 IN IP4 10.10.11.151
-s=-
-c=IN IP4 10.10.11.194
-t=0 0
-m=audio 32564 RTP/AVP 18 97
-a=sendrecv
-a=rtpmap:18 G729/8000
-a=fmtp:18 annexb=no
-a=ptime:20
-a=maxptime:40
-a=rtpmap:97 telephone-event/8000");
+  // 把body換成正式環境
+  $body = "v=0\r\n";
+  $body.= "o=OXE 0 0 IN IP4 ".$API->src_ip."\r\n";
+  $body.= "s=-\r\n";
+  $body.= "c=IN IP4 ".$API->src_ip."\r\n";
+  $body.= "t=0 0\r\n";
+  $body.= "m=audio 32564 RTP/AVP 18 97\r\n";
+  $body.= "a=sendrecv\r\n";
+  $body.= "a=rtpmap:18 G729/8000\r\n";
+  $body.= "a=fmtp:18 annexb=no\r\n";
+  $body.= "a=ptime:20\r\n";
+  $body.= "a=maxptime:40\r\n";
+  $body.= "a=rtpmap:97 telephone-event/8000\r\n";
+
+  $API->setBody($body);
 
   return $API;
 }
