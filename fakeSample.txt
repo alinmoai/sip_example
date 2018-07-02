@@ -1,0 +1,30 @@
+INVITE sip:6001@localhost SIP/2.0
+
+Via: SIP/2.0/UDP 192.168.100.222:40000;rport;branch=z9hG4bK656277
+From: <sip:30390@localhost>;tag=91770
+To: <sip:6001@localhost>
+Call-ID: 74d51e8a3a3bcc24c1bc405a7e556418@192.168.100.222
+CSeq: 20 INVITE
+Contact: <sip:30390@192.168.100.222:40000>
+Content-Type: application/sdp
+Max-Forwards: 70
+User-Agent: PHP SIP
+Allow: INVITE, ACK, CANCEL, BYE, PRACK, NOTIFY, REFER, SUBSCRIBE, OPTIONS, UPDATE, INFO
+Supported: replaces,timer,path
+Session-Expires: 1800;refresher=uac
+Min-SE: 900
+Alert-Info: <urn:alert:tone:internal>
+Content-Length: 222
+
+v=0
+o=OXE 1529993935 1529993935 IN IP4 10.10.11.151
+s=-
+c=IN IP4 10.10.11.194
+t=0 0
+m=audio 32564 RTP/AVP 18 97
+a=sendrecv
+a=rtpmap:18 G729/8000
+a=fmtp:18 annexb=no
+a=ptime:20
+a=maxptime:40
+a=rtpmap:97 telephone-event/8000
