@@ -8,8 +8,8 @@ function getInviteInstance($sourceIP, $from, $to) {
   $API->setDebug(true);
 
   $API->setMethod('INVITE');
-  $API->setFrom("sip:$from@localhost");
-  $API->setUri("sip:$to@localhost");
+  $API->setFrom($from);
+  $API->setUri($to);
 
   $API->addHeader('Allow: INVITE, ACK, CANCEL, BYE, PRACK, NOTIFY, REFER, SUBSCRIBE, OPTIONS, UPDATE, INFO');
   $API->addHeader('Supported: replaces,timer,path');
@@ -17,18 +17,6 @@ function getInviteInstance($sourceIP, $from, $to) {
   $API->addHeader('Min-SE: 900');
   $API->addHeader('Alert-Info: <urn:alert:tone:internal>');
 
-//   $API->setBody("v=0
-// o=OXE 1529993935 1529993935 IN IP4 10.10.11.151
-// s=-
-// c=IN IP4 10.10.11.194
-// t=0 0
-// m=audio 32564 RTP/AVP 18 97
-// a=sendrecv
-// a=rtpmap:18 G729/8000
-// a=fmtp:18 annexb=no
-// a=ptime:20
-// a=maxptime:40
-// a=rtpmap:97 telephone-event/8000");
 
   return $API;
 }
@@ -36,9 +24,19 @@ function getInviteInstance($sourceIP, $from, $to) {
 try
 {
   $sourceIP = '192.168.100.222'; 
-  $to = '6001'; // extension number
-  $setupFrom = rand(30001, 31000);  // 第一次call用的from 
-  $phoneFrom = '0987654321';  // 客戶電話號碼的from
+  $fromIP = "localhost";
+  $toIP = "localhost";
+  $extensionNumber = '6001';
+  $setupNumber = rand(30001, 31000);
+  $phoneNumber = '0987654321';
+
+  $to = "\"$extensionNumber *\" <sip:$extensionNumber@$toIP;user=phone>"; // extension number
+  $setupFrom = "\"$extensionNumber *\" <sip:$setupNumber@$fromIP;user=phone>";  // 第一次call用的from 
+  $phoneFrom = "\"$phoneNumber\" <sip:$phoneNumber@$fromIP;user=phone>";  // 客戶電話號碼的from
+
+  echo "\n".$to."\n";
+  echo $setupFrom."\n";
+  echo $phoneFrom."\n";
 
   echo "staring setup call\n";
 
