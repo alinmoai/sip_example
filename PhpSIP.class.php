@@ -1295,6 +1295,9 @@ class PhpSIP
     else if ($this->method != 'MESSAGE')
     {
       $r.= 'Contact: <sip:'.$this->from_user.'@'.$this->src_ip.':'.$this->src_port.'>'."\r\n";
+
+      //Jeff Change 
+      // $r.= 'Contact: <sip:'.$this->from_user.'@'.$this->src_ip.'>'."\r\n";
     }
     
     // Content-Type
@@ -1363,6 +1366,8 @@ class PhpSIP
   {
     $rand = rand(100000,999999);
     // $this->via = 'SIP/2.0/UDP '.$this->src_ip.':'.$this->src_port.';rport;branch=z9hG4bK'.$rand;
+    
+    // Jeff Change
     $this->via = 'SIP/2.0/UDP '.$this->src_ip.';branch=z9hG4bK'.$rand;
   }
   
