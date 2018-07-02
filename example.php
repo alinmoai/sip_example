@@ -8,7 +8,7 @@ function getInviteInstance($sourceIP, $from, $to) {
   $API->setDebug(true);
 
   $API->setMethod('INVITE');
-  $API->setFrom("sip:$from@localhost");
+  $API->setFrom($from);
   $API->setUri("sip:$to@localhost");
 
   $API->addHeader('Allow: INVITE, ACK, CANCEL, BYE, PRACK, NOTIFY, REFER, SUBSCRIBE, OPTIONS, UPDATE, INFO');
@@ -45,6 +45,17 @@ try
   $to = '6001'; // extension number
   $setupFrom = rand(30001, 31000);  // 第一次call用的from 
   $phoneFrom = '0987654321';  // 客戶電話號碼的from
+
+  $fromIP = "localhost";
+  $toIP = "localhost";
+  $extensionNumber = '6001';
+  $setupNumber = rand(30001, 31000);
+  $phoneNumber = '0987654321';
+
+  // $to = "\"$extensionNumber *\" <sip:$extensionNumber@$toIP;user=phone>"; // extension number
+  $setupFrom = "\"$setupNumber *\" <sip:$setupNumber@$fromIP;user=phone>";  // 第一次call用的from 
+  $phoneFrom = "\"$phoneNumber\" <sip:$phoneNumber@$fromIP;user=phone>";  // 客戶電話號碼的from
+
 
   echo "staring setup call\n";
 
