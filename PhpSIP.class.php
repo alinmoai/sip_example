@@ -1365,10 +1365,10 @@ class PhpSIP
   private function setVia()
   {
     $rand = rand(100000,999999);
-    // $this->via = 'SIP/2.0/UDP '.$this->src_ip.':'.$this->src_port.';rport;branch=z9hG4bK'.$rand;
+    $this->via = 'SIP/2.0/UDP '.$this->src_ip.':'.$this->src_port.';rport;branch=z9hG4bK'.$rand;
     
     // Jeff Change
-    $this->via = 'SIP/2.0/UDP '.$this->src_ip.';branch=z9hG4bK'.$rand;
+    // $this->via = 'SIP/2.0/UDP '.$this->src_ip.';branch=z9hG4bK'.$rand;
   }
   
   /**
