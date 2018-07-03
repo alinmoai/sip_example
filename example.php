@@ -43,15 +43,12 @@ try
 {
   $isDebug = false;
   $sourceIP = '192.168.100.222'; 
-  $to = '6001'; // extension number
-  $setupFrom = rand(30001, 31000);  // 第一次call用的from 
-  $phoneFrom = '0987654321';  // 客戶電話號碼的from
 
   $fromIP = "localhost";
   $toIP = "localhost";
-  $extensionNumber = '6001';
-  $setupNumber = rand(30001, 31000);
-  $phoneNumber = '0987654321';
+  $extensionNumber = '6010';
+  $setupNumber = rand(30001, 31000); // 第一次call用的from 
+  $phoneNumber = '0987654321'; // 客戶電話號碼的from
 
   // $to = "\"$extensionNumber *\" <sip:$extensionNumber@$toIP;user=phone>"; // extension number
   $setupFrom = "\"$setupNumber *\" <sip:$setupNumber@$fromIP;user=phone>";  // 第一次call用的from 
