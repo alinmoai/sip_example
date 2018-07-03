@@ -18,7 +18,7 @@ function getInviteInstance($sourceIP, $from, $to) {
   $API->addHeader('Alert-Info: <urn:alert:tone:internal>');
 
   // 把Header換成正式環境
-  // $API->user_agent = "OmniPCX Enterprise R11.2.2 l2.300.40";
+  $API->user_agent = "OmniPCX Enterprise R11.2.2 l2.300.40";
 
   // 把body換成正式環境
   $body = "v=0\r\n";
@@ -54,12 +54,9 @@ try
   $phoneNumber = '0987654321';
 
   // $to = "\"$extensionNumber *\" <sip:$extensionNumber@$toIP;user=phone>"; // extension number
-  // $setupFrom = "\"$setupNumber *\" <sip:$setupNumber@$fromIP;user=phone>";  // 第一次call用的from 
-  // $phoneFrom = "\"$phoneNumber\" <sip:$phoneNumber@$fromIP;user=phone>";  // 客戶電話號碼的from
-
+  $setupFrom = "\"$setupNumber *\" <sip:$setupNumber@$fromIP;user=phone>";  // 第一次call用的from 
+  $phoneFrom = "\"$phoneNumber\" <sip:$phoneNumber@$fromIP;user=phone>";  // 客戶電話號碼的from
   $to = "sip:$extensionNumber@$toIP"; // extension number
-  $setupFrom = "<sip:$setupNumber@$fromIP;user=phone>";  // 第一次call用的from 
-  $phoneFrom = "<sip:$phoneNumber@$fromIP;user=phone>";  // 客戶電話號碼的from
 
   echo "staring setup call\n";
 
