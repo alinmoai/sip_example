@@ -23,15 +23,15 @@ function getInviteInstance($sourceIP, $from, $to) {
 
 try
 {
-  $sourceIP = '192.168.100.222'; 
-  $fromIP = "localhost";
-  $toIP = "localhost";
-  $extensionNumber = '6001';
-  $setupNumber = rand(30001, 31000);
+  $sourceIP = '10.10.11.151';
+  $fromIP = "10.10.11.151";  
+  $toIP = "192.168.99.200";
+  $extensionNumber = '4016';
+  $setupNumber = rand(30201, 30204);
   $phoneNumber = '0987654321';
 
   $to = "\"$extensionNumber *\" <sip:$extensionNumber@$toIP;user=phone>"; // extension number
-  $setupFrom = "\"$extensionNumber *\" <sip:$setupNumber@$fromIP;user=phone>";  // 第一次call用的from 
+  $setupFrom = "\"$setupNumber *\" <sip:$setupNumber@$fromIP;user=phone>";  // 第一次call用的from 
   $phoneFrom = "\"$phoneNumber\" <sip:$phoneNumber@$fromIP;user=phone>";  // 客戶電話號碼的from
 
   echo "\n".$to."\n";
