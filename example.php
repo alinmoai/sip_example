@@ -33,7 +33,6 @@ function getInviteInstance($sourceIP, $from, $to) {
   $body.= "a=ptime:20\r\n";
   $body.= "a=maxptime:40\r\n";
   $body.= "a=rtpmap:97 telephone-event/8000\r\n";
-
   // $API->setBody($body);
 
   return $API;
@@ -54,6 +53,7 @@ try
   $setupFrom = "\"$setupNumber *\" <sip:$setupNumber@$fromIP;user=phone>";  // 第一次call用的from 
   $phoneFrom = "\"$phoneNumber\" <sip:$phoneNumber@$fromIP;user=phone>";  // 客戶電話號碼的from
   $to = "sip:$extensionNumber@$toIP"; // extension number
+
 
   echo "staring setup call\n";
 
