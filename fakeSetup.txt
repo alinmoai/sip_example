@@ -1,13 +1,13 @@
 INVITE sip:6001@localhost SIP/2.0
-Via: SIP/2.0/UDP 192.168.100.222:40000;rport;branch=z9hG4bK397211
-From: <sip:30362@localhost>;tag=79456
+Via: SIP/2.0/UDP 192.168.100.222;branch=z9hG4bK119545
+From: "30149 *" <sip:30149@localhost;user=phone>;tag=68143
 To: <sip:6001@localhost>
-Call-ID: 8ef6ec0c5315e81dcb061c073cfbf061@192.168.100.222
+Call-ID: abbd3a6789e08b532eadd101035f2333@192.168.100.222
 CSeq: 20 INVITE
-Contact: <sip:30362@192.168.100.222:40000>
+Contact: <sip:30149@192.168.100.222>
 Content-Type: application/sdp
 Max-Forwards: 70
-User-Agent: PHP SIP
+User-Agent: OmniPCX Enterprise R11.2.2 l2.300.40
 Allow: INVITE, ACK, CANCEL, BYE, PRACK, NOTIFY, REFER, SUBSCRIBE, OPTIONS, UPDATE, INFO
 Supported: replaces,timer,path
 Session-Expires: 1800;refresher=uac

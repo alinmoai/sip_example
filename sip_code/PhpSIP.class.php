@@ -83,12 +83,12 @@ class PhpSIP
   /**
    * Source IP address
    */
-  private $src_ip;
+  public $src_ip;
   
   /**
    * Source IP address
    */
-  private $user_agent = 'PHP SIP';
+  public $user_agent = 'PHP SIP';
   
   /**
    * CSeq
@@ -275,7 +275,7 @@ class PhpSIP
       }
     }
     
-    //jeff edit ,to solve file can't edit issue
+    //Jeff Change ,to solve file can't edit issue
     $path = dirname(__FILE__);
     $this->lock_file = "$path/PhpSIP.lock";
 
@@ -562,17 +562,15 @@ class PhpSIP
     if ($method == 'INVITE')
     {
       $body = "v=0\r\n";
-      $body.= "o=OXE 0 0 IN IP4 ".$this->src_ip."\r\n";
-      $body.= "s=-\r\n";
+      $body.= "o=click2dial 0 0 IN IP4 ".$this->src_ip."\r\n";
+      $body.= "s=click2dial call\r\n";
       $body.= "c=IN IP4 ".$this->src_ip."\r\n";
       $body.= "t=0 0\r\n";
-      $body.= "m=audio 32564 RTP/AVP 18 97\r\n";
-      $body.= "a=sendrecv\r\n";
+      $body.= "m=audio 8000 RTP/AVP 0 8 18 3 4 97 98\r\n";
+      $body.= "a=rtpmap:0 PCMU/8000\r\n";
       $body.= "a=rtpmap:18 G729/8000\r\n";
-      $body.= "a=fmtp:18 annexb=no\r\n";
-      $body.= "a=ptime:20\r\n";
-      $body.= "a=maxptime:40\r\n";
-      $body.= "a=rtpmap:97 telephone-event/8000\r\n";
+      $body.= "a=rtpmap:97 ilbc/8000\r\n";
+      $body.= "a=rtpmap:98 speex/8000\r\n";
       
       $this->body = $body;
       
@@ -1297,6 +1295,9 @@ class PhpSIP
     else if ($this->method != 'MESSAGE')
     {
       $r.= 'Contact: <sip:'.$this->from_user.'@'.$this->src_ip.':'.$this->src_port.'>'."\r\n";
+
+      // Jeff Change 
+      // $r.= 'Contact: <sip:'.$this->from_user.'@'.$this->src_ip.'>'."\r\n";
     }
     
     // Content-Type
@@ -1365,6 +1366,9 @@ class PhpSIP
   {
     $rand = rand(100000,999999);
     $this->via = 'SIP/2.0/UDP '.$this->src_ip.':'.$this->src_port.';rport;branch=z9hG4bK'.$rand;
+    
+    // Jeff Change
+    // $this->via = 'SIP/2.0/UDP '.$this->src_ip.';branch=z9hG4bK'.$rand;
   }
   
   /**
