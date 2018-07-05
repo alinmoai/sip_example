@@ -14,7 +14,13 @@ function startCallTask($api, $sourceIP, $fromIP, $toIP, $callerID, $extensionNum
 }
 
 function getCallAPI($api, $sourceIP, $fromIP, $toIP, $callerID, $extensionNumber, $isDebug) {  
-    $from = "\"$callerID *\" <sip:$callerID@$fromIP;user=phone>";  
+    // if(strlen($callerID) > 9) {
+    //     $from = "\"$callerID\" <sip:$callerID@$fromIP;user=phone>"; 
+    // } else {
+    //     $from = "\"$callerID *\" <sip:$callerID@$fromIP;user=phone>"; 
+    // }
+    $from = "sip:$callerID@$fromIP";
+
     $to = "sip:$extensionNumber@$toIP"; // extension number
 
     $api->setMethod('INVITE');
@@ -22,14 +28,24 @@ function getCallAPI($api, $sourceIP, $fromIP, $toIP, $callerID, $extensionNumber
     $api->setTo($to);
     $api->setUri($to);
     $api->setDebug($isDebug);
+    
+    $api = addHeader($api);
+    $api = setBody($api);
 
+    return $api;
+}
+
+function addHeader($api){
     $api->addHeader('Allow: INVITE, ACK, CANCEL, BYE, PRACK, NOTIFY, REFER, SUBSCRIBE, OPTIONS, UPDATE, INFO');
     $api->addHeader('Supported: replaces,timer,path');
     $api->addHeader('Session-Expires: 1800;refresher=uac');
     $api->addHeader('Min-SE: 900');
     $api->addHeader('Alert-Info: <urn:alert:tone:internal>');
     $api->user_agent = "OmniPCX Enterprise R11.2.2 l2.300.40";
+    return $api;
+}
 
+function setBody($api) {
     // 把body換成正式環境
     $body = "v=0\r\n";
     $body.= "o=OXE 0 0 IN IP4 ".$api->src_ip."\r\n";
@@ -72,17 +88,19 @@ function startRegisterTask($api, $setupNumber, $extensionNumber, $fromIP, $isDeb
 }
 
 function relationCall($phoneAPI, $setupAPI) {
-    $setupCallId = $setupAPI->;
-    $setupFromTag = $setupAPI->;
-    $setupToTag = $setupAPI->;
-    $setupFrom = $setupAPI->;
-    $setupTo = $setupAPI->;
-
+    $setupCallId = $setupAPI->call_id;
+    $setupFrom = $setupAPI->from;
+    $setupFromTag = $setupAPI->from_tag;
+    $setupTo = $setupAPI->to;
+    $setupToTag = $setupAPI->to_tag;
+    
     $phoneAPI->addHeader("Replaces: $setupCallId;from-tag=$setupFromTag;to-tag=$setupToTag");
-    $phoneAPI->addHeader("Referred-By: \"$setupFrom *\" $setupTo");
+    $phoneAPI->addHeader("Referred-By: $setupFrom");
     return $phoneAPI;
 }
 
+
+// 之後可以換成RPT發出bye
 function byeSound($api) {
     $api->setMethod('BYE');
     $api->send();
@@ -101,17 +119,25 @@ try
     $extensionNumber = '30205';
     $phoneNumber = '0987654321';
 
-    $setupAPI = new PhpSIP($sourceIP);  
-    // $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
+    $setupAPI = new PhpSIP($sourceIP);
+    $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
     $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);
-    byeSound($setupAPI);
+    // byeSound($setupAPI);
 
-    $phoneApi = new PhpSIP($sourceIP);  
+    // $setupApi->setMethod('INVITE');
+    // $setupApi = addHeader($setupApi);
+    // $setupApi = setBody($setupApi);
+    // $setupApi = relationCall($setupApi, $setupApi);
+    // $from = "\"$phoneNumber\" <sip:$phoneNumber@$fromIP;user=phone>"; 
+    // $setupApi->setFrom($from);
+    // $setupApi->send();
+    // byeSound($setupApi);
+
+    $phoneApi = new PhpSIP($sourceIP);
     $phoneApi = relationCall($phoneApi, $setupApi);
-    $phoneApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $phoneNumber, $extensionNumber, $isDebug);
-    
-    
-    byeSound($setupAPI);  
+    $phoneApi = startCallTask($phoneApi, $sourceIP, $fromIP, $toIP, $phoneNumber, $extensionNumber, $isDebug);
+    // byeSound($setupApi);
+
 } catch (Exception $e) {
     echo $e;
 }

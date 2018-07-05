@@ -1,10 +1,10 @@
-INVITE sip:6001@localhost SIP/2.0
-Via: SIP/2.0/UDP 192.168.100.222;branch=z9hG4bK669098
-From: "0987654321" <sip:0987654321@localhost;user=phone>;tag=67447
-To: <sip:6001@localhost>
-Call-ID: 8bb883ba2aec481d66c5096e5fa3cbb6@192.168.100.222
+INVITE sip:30205@192.168.99.200 SIP/2.0
+Via: SIP/2.0/UDP 192.168.98.2:40004;rport;branch=z9hG4bK400414
+From: <sip:0987654321@192.168.99.200>;tag=26146
+To: <sip:30205@192.168.99.200>
+Call-ID: f775d09cf1498857a0ca4c2c9b29f606@192.168.98.2
 CSeq: 20 INVITE
-Contact: <sip:0987654321@192.168.100.222>
+Contact: <sip:0987654321@192.168.98.2:40004>
 Content-Type: application/sdp
 Max-Forwards: 70
 User-Agent: OmniPCX Enterprise R11.2.2 l2.300.40
@@ -13,14 +13,14 @@ Supported: replaces,timer,path
 Session-Expires: 1800;refresher=uac
 Min-SE: 900
 Alert-Info: <urn:alert:tone:internal>
-Replaces: abbd3a6789e08b532eadd101035f2333@192.168.100.222;from-tag=68143;to-tag=
-Referred-By: ""30149 *" <sip:30149@localhost;user=phone> *" <sip:6001@localhost>
-Content-Length: 223
+Replaces: 2723e1362551157f8661136af7ae694a@192.168.98.2;from-tag=44437;to-tag=0972c70fe85037cd52b495abfceae70a
+Referred-By: <sip:32001@192.168.99.200>
+Content-Length: 217
 
 v=0
-o=OXE 0 0 IN IP4 192.168.100.222
+o=OXE 0 0 IN IP4 192.168.98.2
 s=-
-c=IN IP4 192.168.100.222
+c=IN IP4 192.168.98.2
 t=0 0
 m=audio 32564 RTP/AVP 18 97
 a=sendrecv
