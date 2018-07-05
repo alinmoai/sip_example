@@ -4,6 +4,16 @@ require_once('PhpSIP.class.php');
 /* Sends NOTIFY to reset Linksys phone */
 
 function startCallTask($api, $sourceIP, $fromIP, $toIP, $callerID, $extensionNumber, $isDebug) {  
+    $api = getCallAPI($api, $sourceIP, $fromIP, $toIP, $callerID, $extensionNumber, $isDebug);
+
+    $res = $api->send();
+    if($isDebug) {
+        echo "res: $res\n";    
+    }
+    return $api;
+}
+
+function getCallAPI($api, $sourceIP, $fromIP, $toIP, $callerID, $extensionNumber, $isDebug) {  
     $from = "\"$callerID *\" <sip:$callerID@$fromIP;user=phone>";  
     $to = "sip:$extensionNumber@$toIP"; // extension number
 
@@ -35,10 +45,6 @@ function startCallTask($api, $sourceIP, $fromIP, $toIP, $callerID, $extensionNum
     $body.= "a=rtpmap:97 telephone-event/8000\r\n";
     $api->setBody($body);
 
-    $res = $api->send();
-    if($isDebug) {
-        echo "res: $res\n";    
-    }
     return $api;
 }
 
@@ -65,6 +71,18 @@ function startRegisterTask($api, $setupNumber, $extensionNumber, $fromIP, $isDeb
     return $api;
 }
 
+function relationCall($phoneAPI, $setupAPI) {
+    $setupCallId = $setupAPI->;
+    $setupFromTag = $setupAPI->;
+    $setupToTag = $setupAPI->;
+    $setupFrom = $setupAPI->;
+    $setupTo = $setupAPI->;
+
+    $phoneAPI->addHeader("Replaces: $setupCallId;from-tag=$setupFromTag;to-tag=$setupToTag");
+    $phoneAPI->addHeader("Referred-By: \"$setupFrom *\" $setupTo");
+    return $phoneAPI;
+}
+
 function byeSound($api) {
     $api->setMethod('BYE');
     $api->send();
@@ -88,7 +106,11 @@ try
     $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);
     byeSound($setupAPI);
 
-    $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $phoneNumber, $extensionNumber, $isDebug);
+    $phoneApi = new PhpSIP($sourceIP);  
+    $phoneApi = relationCall($phoneApi, $setupApi);
+    $phoneApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $phoneNumber, $extensionNumber, $isDebug);
+    
+    
     byeSound($setupAPI);  
 } catch (Exception $e) {
     echo $e;
