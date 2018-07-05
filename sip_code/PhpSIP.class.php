@@ -832,8 +832,10 @@ class PhpSIP
         throw new PhpSIPException("DNS resolution of ".$this->host." failed");
       }
     }
-    
-    echo "data = \n".$data."\n\n";
+
+    if($this->debug) {
+        echo "data = \n".$data."\n";
+    }
 
     if (!@socket_sendto($this->socket, $data, strlen($data), 0, $ip_address, $this->port))
     {
