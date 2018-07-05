@@ -3,14 +3,13 @@ require_once('PhpSIP.class.php');
 
 /* Sends NOTIFY to reset Linksys phone */
 
-function startCallTask($api, $sourceIP, $fromIP, $toIP, $callerID, $extensionNumber, $isDebug) {
-    $extensionNumber = '4016';
-  
-    $from = "\"$setupNumber *\" <sip:$callerID@$fromIP;user=phone>";  
+function startCallTask($api, $sourceIP, $fromIP, $toIP, $callerID, $extensionNumber, $isDebug) {  
+    $from = "\"$callerID *\" <sip:$callerID@$fromIP;user=phone>";  
     $to = "sip:$extensionNumber@$toIP"; // extension number
 
     $api->setMethod('INVITE');
     $api->setFrom($from);
+    $api->setTo($to);
     $api->setUri($to);
     $api->setDebug($isDebug);
 
@@ -43,11 +42,7 @@ function startCallTask($api, $sourceIP, $fromIP, $toIP, $callerID, $extensionNum
     return $api;
 }
 
-function startRegisterTask($api, $setupNumber, $fromIP, $isDebug) {
-    
-    $extensionNumber = '4016';
-    $setupNumber = 32001;
-
+function startRegisterTask($api, $setupNumber, $extensionNumber, $fromIP, $isDebug) {
     $setupFrom = "<sip:$setupNumber@$fromIP>";  // 第一次call用的from 
     $to = "sip:$setupNumber@$fromIP"; // extension number
 
@@ -70,6 +65,12 @@ function startRegisterTask($api, $setupNumber, $fromIP, $isDebug) {
     return $api;
 }
 
+function byeSound($api) {
+    $api->setMethod('BYE');
+    $api->send();
+    return $api;
+}
+
 try
 {  
     $isDebug = true;
@@ -79,12 +80,16 @@ try
     $toIP = "192.168.99.200";
 
     $setupNumber = '32001';
-    $extensionNumber = '4016';
+    $extensionNumber = '30205';
+    $phoneNumber = '0987654321';
 
-    $setupAPI = new PhpSIP($sourceIP);
-
-    $setupAPI = startRegisterTask($setupAPI, $setupNumber, $fromIP, $isDebug);
+    $setupAPI = new PhpSIP($sourceIP);  
+    // $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
     $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);
+    byeSound($setupAPI);
+
+    $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $phoneNumber, $extensionNumber, $isDebug);
+    byeSound($setupAPI);  
 } catch (Exception $e) {
     echo $e;
 }
