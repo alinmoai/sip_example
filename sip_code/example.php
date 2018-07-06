@@ -111,7 +111,8 @@ function byeSound($api) {
 
 try
 {  
-    $isDebug = true;
+    $isDebug = true; // 是否讓程式印出call的流程與結果
+    $loopTimes = 1000; // 重複撥打的次數
 
     $sourceIP = '192.168.98.2';  // 執行php的ip , 跟asterisk相同
     $fromIP = "192.168.98.2";  
@@ -119,31 +120,46 @@ try
 
     $setupNumber = '32002';
     $extensionNumber = '30206';
-    $phoneNumber = '0988888988';
+    $phoneNumber = '0987654321';
 
-    $asteriskOnly = false; // 只走內網
+    $asteriskOnly = true; // 只走內網
+    
+    
 
-    if($asteriskOnly){
-        $setupAPI = new PhpSIP($sourceIP);
-        // $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
-        $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);
+    for ($i = 0 ; $i < $loopTimes ; $i ++ ) {
+        $setupNumber = rand (32001, 32004);
+        $phoneNumber = '09876'.$setupNumber;
+        $extensionNumber = rand(30205, 30208);
 
-        $phoneApi = new PhpSIP($sourceIP);
-        $phoneApi = relationCall($phoneApi, $setupApi);
-        $phoneApi = startCallTask($phoneApi, $sourceIP, $fromIP, $toIP, $phoneNumber, $extensionNumber, $isDebug);
+        if($asteriskOnly){
+            $setupAPI = new PhpSIP($sourceIP);
+            // $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
+            $setupApi = getCallAPI($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);
+            $res = $setupApi->send();
 
-        byeSound($setupAPI);
-        byeSound($phoneApi);
-    } else {
+            if($res == '200') {
+                $phoneApi = new PhpSIP($sourceIP);
+                $phoneApi = relationCall($phoneApi, $setupApi);
+                $phoneApi = getCallAPI($phoneApi, $sourceIP, $fromIP, $toIP, $phoneNumber, $extensionNumber, $isDebug);
+                $res = $phoneApi->send();
+                
+                byeSound($setupAPI);
+
+                if ($res == '200') {
+                    byeSound($phoneApi);
+                }
+            }
+        } else {
         // 通過 OmniPCX Enterprise R11.2.2 l2.300.40 交換機來打給Asterisk
-        $extensionNumber = '4016';
-        $fromIP = "192.168.99.200"; 
-        $toIP = "192.168.99.200"; 
+            $extensionNumber = '4016';
+            $fromIP = "192.168.99.200"; 
+            $toIP = "192.168.99.200"; 
 
-        $setupAPI = new PhpSIP($sourceIP);
-        $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
-        $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);     
-    }
+            $setupAPI = new PhpSIP($sourceIP);
+            $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
+            $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);     
+        }
+    } 
 } catch (Exception $e) {
     echo $e;
 }
