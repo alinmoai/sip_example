@@ -124,7 +124,6 @@ try
     $setupAPI = new PhpSIP($sourceIP);
     // $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
     $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);
-    // byeSound($setupAPI);
 
     // $setupApi->setMethod('INVITE');
     // $setupApi = addHeader($setupApi);
@@ -138,7 +137,9 @@ try
     $phoneApi = new PhpSIP($sourceIP);
     $phoneApi = relationCall($phoneApi, $setupApi);
     $phoneApi = startCallTask($phoneApi, $sourceIP, $fromIP, $toIP, $phoneNumber, $extensionNumber, $isDebug);
-    // byeSound($setupApi);
+
+    byeSound($setupAPI);
+    byeSound($phoneApi);
 
 } catch (Exception $e) {
     echo $e;
