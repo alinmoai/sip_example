@@ -13,8 +13,8 @@ Supported: replaces,timer,path
 Session-Expires: 1800;refresher=uac
 Min-SE: 900
 Alert-Info: <urn:alert:tone:internal>
-Replaces: 2723e1362551157f8661136af7ae694a@192.168.98.2;from-tag=44437;to-tag=0972c70fe85037cd52b495abfceae70a
 Referred-By: <sip:32001@192.168.99.200>
+Replaces: 2723e1362551157f8661136af7ae694a@192.168.98.2;from-tag=44437;to-tag=0972c70fe85037cd52b495abfceae70a
 Content-Length: 217
 
 v=0

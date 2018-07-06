@@ -77,7 +77,9 @@ function startRegisterTask($api, $setupNumber, $extensionNumber, $fromIP, $isDeb
     $api->addHeader('Supported: replaces, timer');
     $api->addHeader('Expires: 120');
 
-    $api->user_agent = "Asterisk PBX 13.1.0~dfsg-1.1ubuntu4.1";
+    // $api->user_agent = "Asterisk PBX 13.1.0~dfsg-1.1ubuntu4.1";
+
+    // $api->user_agent = "OmniPCX Enterprise R11.2.2 l2.300.40";
     
     $res = $api->send();
     if($isDebug) {
@@ -111,16 +113,16 @@ try
 {  
     $isDebug = true;
 
-    $sourceIP = '192.168.98.2';
-    $fromIP = "192.168.99.200";
-    $toIP = "192.168.99.200";
+    $sourceIP = '192.168.98.2';  // 執行php的ip , 跟asterisk相同
+    $fromIP = "localhost";  
+    $toIP = "192.168.98.2:5060"; 
 
-    $setupNumber = '32001';
-    $extensionNumber = '30205';
-    $phoneNumber = '0987654321';
+    $setupNumber = '32002';
+    $extensionNumber = '30206';
+    $phoneNumber = '0988888988';
 
     $setupAPI = new PhpSIP($sourceIP);
-    $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
+    // $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
     $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);
     // byeSound($setupAPI);
 
