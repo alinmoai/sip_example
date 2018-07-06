@@ -137,15 +137,13 @@ try
     } else {
         // 通過 OmniPCX Enterprise R11.2.2 l2.300.40 交換機來打給Asterisk
         $extensionNumber = '4016';
+        $fromIP = "192.168.99.200"; 
         $toIP = "192.168.99.200"; 
 
         $setupAPI = new PhpSIP($sourceIP);
         $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
         $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);     
     }
-
-    
-
 } catch (Exception $e) {
     echo $e;
 }
