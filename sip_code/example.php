@@ -114,32 +114,37 @@ try
     $isDebug = true;
 
     $sourceIP = '192.168.98.2';  // 執行php的ip , 跟asterisk相同
-    $fromIP = "localhost";  
+    $fromIP = "192.168.98.2";  
     $toIP = "192.168.98.2:5060"; 
 
     $setupNumber = '32002';
     $extensionNumber = '30206';
     $phoneNumber = '0988888988';
 
-    $setupAPI = new PhpSIP($sourceIP);
-    // $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
-    $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);
+    $asteriskOnly = false; // 只走內網
 
-    // $setupApi->setMethod('INVITE');
-    // $setupApi = addHeader($setupApi);
-    // $setupApi = setBody($setupApi);
-    // $setupApi = relationCall($setupApi, $setupApi);
-    // $from = "\"$phoneNumber\" <sip:$phoneNumber@$fromIP;user=phone>"; 
-    // $setupApi->setFrom($from);
-    // $setupApi->send();
-    // byeSound($setupApi);
+    if($asteriskOnly){
+        $setupAPI = new PhpSIP($sourceIP);
+        // $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
+        $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);
 
-    $phoneApi = new PhpSIP($sourceIP);
-    $phoneApi = relationCall($phoneApi, $setupApi);
-    $phoneApi = startCallTask($phoneApi, $sourceIP, $fromIP, $toIP, $phoneNumber, $extensionNumber, $isDebug);
+        $phoneApi = new PhpSIP($sourceIP);
+        $phoneApi = relationCall($phoneApi, $setupApi);
+        $phoneApi = startCallTask($phoneApi, $sourceIP, $fromIP, $toIP, $phoneNumber, $extensionNumber, $isDebug);
 
-    byeSound($setupAPI);
-    byeSound($phoneApi);
+        byeSound($setupAPI);
+        byeSound($phoneApi);
+    } else {
+        // 通過 OmniPCX Enterprise R11.2.2 l2.300.40 交換機來打給Asterisk
+        $extensionNumber = '4016';
+        $toIP = "192.168.99.200"; 
+
+        $setupAPI = new PhpSIP($sourceIP);
+        $setupAPI = startRegisterTask($setupAPI, $setupNumber, $extensionNumber, $fromIP, $isDebug);
+        $setupApi = startCallTask($setupAPI, $sourceIP, $fromIP, $toIP, $setupNumber, $extensionNumber, $isDebug);     
+    }
+
+    
 
 } catch (Exception $e) {
     echo $e;
